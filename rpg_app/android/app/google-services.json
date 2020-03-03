@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "317947191889",
+    "firebase_url": "https://rpg-app-3ada5.firebaseio.com",
+    "project_id": "rpg-app-3ada5",
+    "storage_bucket": "rpg-app-3ada5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317947191889:android:646c661c5cb25dbfa0ce70",
+        "android_client_info": {
+          "package_name": "com.joeltech.rpg_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317947191889-fihu8odrqu0h4cmau8vkel7qnan1nt83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOvJvcUmVDFXyiPTkz-AK300BmhlsbdjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317947191889-fihu8odrqu0h4cmau8vkel7qnan1nt83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,21 +1,21 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rpg_app/loading.dart';
+import 'package:rpg_app/Screens/login_page.dart';
+import 'package:rpg_app/widgets/custom_drawer.dart';
 import 'package:rpg_app/widgets/snackbar.dart';
 
-import 'login_page.dart';
 
 
 class SetupPage extends StatefulWidget {
 
   final Map<String, dynamic> usuario;
   String usuarioID;
-  SetupPage(this.usuario, this.usuarioID);
+  PageController controller;
+  SetupPage(this.usuario, this.usuarioID, this.controller);
 
   @override
   _SetupPageState createState() => _SetupPageState();
@@ -58,6 +58,7 @@ class _SetupPageState extends State<SetupPage> {
         title: Text("Configurações"),
         centerTitle: true,
       ),
+      drawer: CustomDrawer(widget.usuario, widget.usuarioID, widget.controller),
       floatingActionButton: FloatingActionButton(
         onPressed: _salvarAlteracoes,
         tooltip: "Salvar Alterações",
@@ -72,27 +73,8 @@ class _SetupPageState extends State<SetupPage> {
               _admin ? _gerarSenha() : Container(),
               alterar("Login"),
               alterar("Senha"),
-              Expanded(
-                child: Container(
-                    child:Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(14.0),
-                          child: RaisedButton(
-                            color: Colors.grey,
-                            onPressed: _logout,
-                            child: Text("Fazer Logout"),
-                          ),
-                        )
-                    )
-                ),
-              ),
-
             ],
           ),
-          Center(
-            child:_carregando ?  CircularProgressIndicator() : Container(),
-          )
         ],
       )
     );

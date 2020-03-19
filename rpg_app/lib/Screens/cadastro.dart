@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:rpg_app/login_page.dart';
-import 'package:rpg_app/tela_inicial.dart';
+import 'package:rpg_app/Screens/login_page.dart';
+import 'package:rpg_app/Tabs/tela_inicial.dart';
 import 'package:rpg_app/widgets/snackbar.dart';
 
 class Cadastro extends StatefulWidget {

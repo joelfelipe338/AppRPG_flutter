@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rpg_app/tela_inicial.dart';
+import 'package:rpg_app/page_view.dart';
+import 'package:rpg_app/Tabs/tela_inicial.dart';
 import 'package:path_provider/path_provider.dart';
 import 'cadastro.dart';
 
@@ -223,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     if(_login){
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => TelaInicial(_usuarioLogin.data, _usuarioLogin.documentID)));
+          MaterialPageRoute(builder: (context) => CustomPageView(_usuarioLogin.data, _usuarioLogin.documentID)));
     }else{
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("Usuario ou Senha Invalidos!"),

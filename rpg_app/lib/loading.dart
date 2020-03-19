@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rpg_app/login_page.dart';
-import 'package:rpg_app/tela_inicial.dart';
+import 'package:rpg_app/Screens/login_page.dart';
+import 'package:rpg_app/page_view.dart';
+import 'package:rpg_app/Tabs/tela_inicial.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class Loading extends StatefulWidget {
@@ -21,7 +22,6 @@ class _LoadingState extends State<Loading> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("oiiiia");
     _readData().then((value){
       setState(() {
         _usuario = json.decode(value);
@@ -37,11 +37,19 @@ class _LoadingState extends State<Loading> {
       children: <Widget>[
         SplashScreen(
           seconds: 3,
-          navigateAfterSeconds:(_usuario == null || _usuario.isEmpty) ? LoginPage() : TelaInicial(_usuario,_usuario["id"]),
+          navigateAfterSeconds:(_usuario == null || _usuario.isEmpty) ?
+          LoginPage()
+              : CustomPageView(_usuario,_usuario["id"]),
           loaderColor: Colors.transparent,
         ),
         Container(
-          color: Colors.black,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.lightBlue],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight
+            )
+          ),
           child:  Center(
             child: Image.asset("images/dragon.gif"),
           ),)

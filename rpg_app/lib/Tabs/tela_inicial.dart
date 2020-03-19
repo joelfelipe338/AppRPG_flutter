@@ -5,15 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rpg_app/chat.dart';
-import 'package:rpg_app/ficha.dart';
-import 'package:rpg_app/setup_page.dart';
-import 'package:rpg_app/widgets/menu_drawer.dart';
+import 'package:rpg_app/Screens/chat.dart';
+import 'package:rpg_app/Screens/ficha.dart';
+import 'package:rpg_app/widgets/custom_drawer.dart';
 
 class TelaInicial extends StatefulWidget {
   final Map<String, dynamic> usuario;
   String usuarioID;
-  TelaInicial(this.usuario, this.usuarioID);
+  PageController controller;
+  TelaInicial(this.usuario, this.usuarioID, this.controller);
 
   @override
   _TelaInicialState createState() => _TelaInicialState();
@@ -46,8 +46,6 @@ class _TelaInicialState extends State<TelaInicial> {
     if (widget.usuario["usuario"] == "admin") _admin = true;
     _usuario = widget.usuario;
     _usuario["id"] = widget.usuarioID;
-    print("snapshot");
-    print(Firestore.instance.collection("usuarios").document(widget.usuarioID).snapshots());
     _saveDataLogin();
     setState(() {
       _ficha = widget.usuario["ficha"];
@@ -80,7 +78,6 @@ class _TelaInicialState extends State<TelaInicial> {
                 title: Text(_usuario["login"]),
                 centerTitle: true,
 
-
                actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.chat),
@@ -94,48 +91,7 @@ class _TelaInicialState extends State<TelaInicial> {
                   )
                 ],
               ),
-              drawer: Drawer(
-                child: Column(
-                  children: <Widget>[
-                    DrawerHeader(
-                      margin: null,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(image: _ficha["imageFundo"] == "" ?
-                        AssetImage("images/imageLogin1.jpg"): NetworkImage(_ficha["imageFundo"]),fit: BoxFit.fill)
-                      ),
-                        child:Column(
-                          children: <Widget>[
-                            Center(
-                              child: CircleAvatar(
-                                backgroundImage:_ficha["imagePerfil"] == "" ?
-                            AssetImage("images/person.png"): FileImage(File(_ficha["imagePerfil"])),
-                                radius: 50.0,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                _ficha["nick"] ?? "Nome Personagem",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30.0),
-                              ),
-                            )
-                          ],
-                        )),
-                    Expanded(
-
-                      child:Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage("images/madeira.jpg"),fit: BoxFit.cover)
-                        ),
-                        child: MenuDrawer(_usuario, _usuario["id"], 1),
-                      )
-
-                    ),
-
-                  ],
-                ),
-              ),
+              drawer: CustomDrawer(widget.usuario, widget.usuarioID, widget.controller),
               backgroundColor: Colors.transparent,
               body: _tela(),
               floatingActionButton: FloatingActionButton(
@@ -552,31 +508,6 @@ class _TelaInicialState extends State<TelaInicial> {
             ],
           ),
         ));
-  }
-
-   _rotaMenu(BuildContext context, Map usuario, String usuarioID, int index){
-    switch(index){
-      case 1:
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> SetupPage(usuario,usuarioID))
-        );
-        break;
-      case 2:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context)=> SetupPage(usuario,usuarioID))
-        );
-        break;
-      case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context)=> SetupPage(usuario,usuarioID))
-        );
-        break;
-      default:
-        break;
-    }
-    setState(() {
-
-    });
   }
 
   Future<File> _getFileLogin() async {

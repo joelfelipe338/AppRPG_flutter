@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rpg_app/Screens/login_page.dart';
-import 'package:rpg_app/widgets/drawer_tile.dart';
+import 'package:rpg_app/Tiles/drawer_tile.dart';
 
 class CustomDrawer extends StatelessWidget {
 

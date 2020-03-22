@@ -454,7 +454,7 @@ class _TelaInicialState extends State<TelaInicial> {
                   FaIcon(FontAwesomeIcons.bong,color:Colors.blue),
                   Padding(
                       padding: EdgeInsets.only(left: 10.0),
-                      child: StreamBuilder(
+                      child: StreamBuilder<DocumentSnapshot>(
                         stream: Firestore.instance.collection("usuarios").document(widget.usuarioID).snapshots(),
                         builder: (context, snapshot){
                           return Container(width: 70,height: 10.0,

@@ -11,8 +11,8 @@ class ChatMessage extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
         margin: usuario == data["usuario"] ?
-          EdgeInsets.only(top: 5.0, bottom: 5.0,right: 10.0, left: 100.0) :
-          EdgeInsets.only(top: 5.0, bottom: 5.0,right: 100.0, left: 10.0),
+        EdgeInsets.only(top: 5.0, bottom: 5.0,right: 10.0, left: 100.0) :
+        EdgeInsets.only(top: 5.0, bottom: 5.0,right: 100.0, left: 10.0),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
           child: Column(

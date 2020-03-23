@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rpg_app/widgets/snackbar.dart';
 
 class Ficha extends StatefulWidget {
   
@@ -19,7 +21,7 @@ class Ficha extends StatefulWidget {
 
 class _FichaState extends State<Ficha> {
 
-
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final _controllerNome = TextEditingController();
   final _controllerElemento = TextEditingController();
   final _controllerIdade = TextEditingController();
@@ -61,6 +63,7 @@ class _FichaState extends State<Ficha> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(title: Text("ficha"),centerTitle: true,
       actions: <Widget>[
         IconButton(
@@ -82,28 +85,32 @@ class _FichaState extends State<Ficha> {
     );
   }
 
-  void _salvarDados(){
+  void _salvarDados()async{
+    var conected = await Connectivity().checkConnectivity();
+    if(conected == ConnectivityResult.wifi || conected == ConnectivityResult.mobile){
+      _fichaAux["manaAtual"] = _fichaAux["manaTotal"];
+      _fichaAux["vidaAtual"] = _fichaAux["vidaTotal"];
+      _fichaAux["pontosLevel"] = 0;
+      _fichaAux["imagePerfil"] = _imageAux;
+      _usuario["ficha"] = _fichaAux;
 
-    _fichaAux["manaAtual"] = _fichaAux["manaTotal"];
-    _fichaAux["vidaAtual"] = _fichaAux["vidaTotal"];
-    _fichaAux["pontosLevel"] = 0;
-    _fichaAux["imagePerfil"] = _imageAux;
-    _usuario["ficha"] = _fichaAux;
-
-    _saveDataLogin();
-    FirebaseStorage.instance.ref().child(
-        DateTime.now().millisecondsSinceEpoch.toString()
-    ).putFile(_imgFile).onComplete.then((snap){
-      snap.ref.getDownloadURL().then((url){
-        _fichaAux["imageNetwork"] = url;
-      }).then((value){
-        Firestore.instance.collection("usuarios").document(widget.usuarioID).updateData({
-          "ficha": _fichaAux
-        }).then((data){
-          Navigator.pop(context, _fichaAux);
+      _saveDataLogin();
+      FirebaseStorage.instance.ref().child(
+          DateTime.now().millisecondsSinceEpoch.toString()
+      ).putFile(_imgFile).onComplete.then((snap){
+        snap.ref.getDownloadURL().then((url){
+          _fichaAux["imageNetwork"] = url;
+        }).then((value){
+          Firestore.instance.collection("usuarios").document(widget.usuarioID).updateData({
+            "ficha": _fichaAux
+          }).then((data){
+            Navigator.pop(context, _fichaAux);
+          });
         });
       });
-    });
+    }else{
+      _scaffoldkey.currentState.showSnackBar(snackbar(Colors.red, "Sem Conexão!"));
+    }
 
   }
   Widget _telaCadastro() {
@@ -372,7 +379,7 @@ class _FichaState extends State<Ficha> {
     );
   }
 
-  void _foto(){
+  void _foto()async{
     _fotoAlterada = false;
     ImagePicker.pickImage(source: ImageSource.camera).then((file){
       if(file == null) return;
@@ -380,8 +387,6 @@ class _FichaState extends State<Ficha> {
         _imgFile = file;
         _imageAux = file.path;
       });
-
-
     });
   }
 

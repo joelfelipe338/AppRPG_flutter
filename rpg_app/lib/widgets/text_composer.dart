@@ -16,24 +16,44 @@ class _TextComposerState extends State<TextComposer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5.0),
+    return Container(
+      margin: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.horizontal(left: Radius.circular(100.0), right: Radius.circular(100.0))
+      ),
       child: Row(
         children: <Widget>[
+          SizedBox(
+            width: 20.0,
+          ),
           Expanded(
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration.collapsed(
-                border: null,
-                hintText: "   Digite Aqui...",
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                maxWidth: double.infinity,
+                minHeight: 48.0,
+                maxHeight: 52.0
               ),
-              onChanged: (text){
-                setState(() {
-                  _isComposing = true;
-                });
-              },
-            ),
-
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                reverse: true,
+                child: TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: _textController,
+                  decoration: InputDecoration.collapsed(
+                      hintText: "Digite Aqui...",
+                      hintStyle: TextStyle(color: Colors.grey)
+                  ),
+                  onChanged: (text){
+                    setState(() {
+                      _isComposing = true;
+                    });
+                  },
+                ),
+              ),
+            )
           ),
           IconButton(
             icon: Icon(Icons.send),

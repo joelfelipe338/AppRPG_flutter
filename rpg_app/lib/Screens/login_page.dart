@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rpg_app/page_view.dart';
 import 'package:rpg_app/Tabs/tela_inicial.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rpg_app/widgets/snackbar.dart';
 import 'cadastro.dart';
 
 class LoginPage extends StatefulWidget {
@@ -226,10 +227,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => CustomPageView(_usuarioLogin.data, _usuarioLogin.documentID)));
     }else{
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Usuario ou Senha Invalidos!"),
-        duration: Duration(seconds: 2),
-      ));
+      _scaffoldKey.currentState.showSnackBar(snackbar(Colors.black12, "Usuario ou senha invalidos@!"));
     }
     setState(() {
       _carregando = false;

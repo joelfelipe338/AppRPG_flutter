@@ -28,6 +28,7 @@ dependencies:
   splashscreen: ^1.2.0
   font_awesome_flutter: ^8.7.0
   image_picker: ^0.6.3+4
+  connectivity: ^0.4.8+2
   firebase_storage: ^3.1.1
 
 

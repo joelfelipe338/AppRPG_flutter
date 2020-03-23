@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:rpg_app/widgets/chat_message.dart';
+import 'package:rpg_app/widgets/snackbar.dart';
 import 'package:rpg_app/widgets/text_composer.dart';
 
 class Chat extends StatefulWidget {
@@ -15,15 +17,12 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
 
-  List<dynamic> messages = [
-
-    ];
-
-
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(
         title: Text("Chat RPG"),
         centerTitle: true,
@@ -64,13 +63,19 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  void _enviar(String text){
+  void _enviar(String text)async{
     String message = text;
     String usuario = widget.usuario["usuario"];
-    Firestore.instance.collection("chat").add({
-      "message": message,
-      "usuario": usuario,
-      "time" : Timestamp.now(),
-    });
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+      Firestore.instance.collection("chat").add({
+        "message": message,
+        "usuario": usuario,
+        "time" : Timestamp.now(),
+      });
+    } else{
+      print("semConexao");
+      _scaffoldkey.currentState.showSnackBar(snackbar(Colors.red,"Sem Conexão!"));
+    }
   }
 }

@@ -33,7 +33,7 @@ class _ChatState extends State<Chat> {
           Column(
             children: <Widget>[
               Expanded(
-                child: StreamBuilder<QuerySnapshot>(
+                child:StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance.collection("chat").orderBy("time").snapshots(),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
@@ -53,7 +53,7 @@ class _ChatState extends State<Chat> {
                         );
                     }
                   },
-                )
+                ),
               ),
               TextComposer(_enviar)
             ],
